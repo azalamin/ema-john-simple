@@ -14,6 +14,9 @@
 }
 .summary-container {
   background-color: #ff99004d;
+  position: fixed;
+  right: 0;
+  height: calc(100vh - 80px);
 }
 .summary-container h4 {
   text-align: center;
