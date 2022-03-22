@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { addToDb, getStoredCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
@@ -6,7 +7,6 @@ import './Shop.css';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
-    const [total, setTotal] = useState(0);
 
     useEffect( () => {
         
@@ -14,31 +14,33 @@ const Shop = () => {
         .then(res => res.json())
         .then(data => setProducts(data))
 
-    }, [])
+    }, []);
+
+    useEffect( () => {
+        
+        const savedCart = []
+        const storedCart = getStoredCart();
+        for (const id in storedCart) {
+            const addedProduct = products.find(product => product.id === id);
+            if (addedProduct) {
+                const quantity = storedCart[id];
+                addedProduct.quantity = quantity;
+                savedCart.push(addedProduct)
+                console.log(savedCart)
+            }
+        }
+        setCart(savedCart)
+
+    }, [products])
 
     const handleAddToCart = (product) => {
-        setCart([...cart, product])
-        setTotal(total + product.price)
+        setCart([...cart, product]);
+        addToDb(product.id)
     }
-    
-    // Calculate Shipping Cost
-    let shipCost = 0;
-        if(cart.length >= 1){
-            shipCost = 60;
-        };
-        if (cart.length >= 5){
-            shipCost = 150;
-        };
-        if (cart.length >= 10){
-            shipCost = 300;
-        }
-    
-    // Calculate Tax
-    let tax = Math.round(total  * .1) ;
 
-     const clearCart = () => {
+    // Reset Cart
+    const clearCart = () => {
         setCart([])
-        setTotal(0)
     }
     
     return (
@@ -53,13 +55,7 @@ const Shop = () => {
                 }
             </div>
             <div className="summary-container">
-                <Cart 
-                cart={cart}
-                total={total}
-                shipCost={shipCost}
-                tax={tax}
-                clearCart={clearCart}
-                ></Cart>
+                <Cart cart={cart} clearCart={clearCart}></Cart>
             </div>
         </div>
     );
