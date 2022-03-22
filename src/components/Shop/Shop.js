@@ -4,6 +4,8 @@ import './Shop.css';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
+    const [cart, setCart] = useState([]);
+    const [total, setTotal] = useState(0);
 
     useEffect( () => {
         
@@ -14,9 +16,30 @@ const Shop = () => {
     }, [])
 
     const handleAddToCart = (product) => {
-        console.log('Clicked', product)
+        setCart([...cart, product])
+        setTotal(total + product.price)
     }
+    
+    // Calculate Shipping Cost
+    let shipCost = 0;
+        if(cart.length >= 1){
+            shipCost = 60;
+        };
+        if (cart.length >= 5){
+            shipCost = 150;
+        };
+        if (cart.length >= 10){
+            shipCost = 300;
+        }
+    
+    // Calculate Tax
+    let tax = Math.round(total  * .1) ;
 
+     const clearCart = () => {
+        setCart([])
+        setTotal(0)
+    }
+    
     return (
         <div className='shop-container'>
             <div className="products-container">
@@ -31,13 +54,13 @@ const Shop = () => {
             <div className="summary-container">
                 <h4>Order Summary</h4>
                 <div className="order-info">
-                    <p>Selected Items: </p>
-                    <p>Total Price: </p>
-                    <p>Total Shipping Charge: </p>
-                    <p>Tax: </p>
-                    <h5>Grand Total: </h5>
+                    <p>Selected Items: {cart.length}</p>
+                    <p>Total Price: {total}</p>
+                    <p>Total Shipping Charge: {shipCost}</p>
+                    <p>Tax: {tax}</p>
+                    <h5>Grand Total: {total + shipCost + tax}</h5>
                     <div className="button-area">
-                        <button className='clear-btn'>Clear Cart</button>
+                        <button onClick={clearCart} className='clear-btn'>Clear Cart</button>
                         <button className='review-btn'>Review Order</button>
                     </div>
                 </div>
