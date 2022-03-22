@@ -14,33 +14,4 @@
 }
 .summary-container {
   background-color: #ff99004d;
-  position: fixed;
-  right: 0;
-  height: calc(100vh - 80px);
-}
-.summary-container h4 {
-  text-align: center;
-}
-.order-info {
-  padding: 0px 10px;
-}
-.button-area button {
-  display: block;
-  width: 100%;
-  margin: 10px 0px;
-  height: 40px;
-  color: white;
-  border: none;
-}
-.clear-btn {
-  background: #ff3030;
-}
-.clear-btn:hover {
-  background-color: #940202;
-}
-.review-btn {
-  background: #ff9900;
-}
-.review-btn:hover {
-  background: #9b5d00;
 }
