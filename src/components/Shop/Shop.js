@@ -7,7 +7,7 @@ import './Shop.css';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
-
+    
     useEffect( () => {
         
         fetch('products.json')
@@ -28,13 +28,23 @@ const Shop = () => {
                 savedCart.push(addedProduct)
                 console.log(savedCart)
             }
-        }
+        } 
         setCart(savedCart)
 
     }, [products])
 
     const handleAddToCart = (product) => {
-        setCart([...cart, product]);
+        let newCart= [];
+        const exist = cart.find(singleProduct => singleProduct.id === product.id);
+        if (!exist) {
+            product.quantity = 1;
+            newCart = [...cart, product]
+        } else{
+            const rest = cart.filter(singleProduct => singleProduct.id !== product.id);
+            exist.quantity = exist.quantity + 1;
+            newCart = [...rest, exist]
+        }
+        setCart(newCart);
         addToDb(product.id)
     }
 
