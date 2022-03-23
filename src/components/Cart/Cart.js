@@ -7,11 +7,10 @@ const Cart = ({cart, clearCart}) => {
     let shippingCost = 0;
     let quantity = 0;
     for (const product of cart) {
-        quantity = quantity + product.quantity;
+        quantity = quantity + product.quantity
         total = total + product.price * product.quantity;
-        shippingCost = shippingCost + product.shipping;
+        shippingCost = shippingCost + product.shipping * product.quantity;
     }
-    
     const tax = Number((total * 0.1).toFixed(0));
     const grandTotal = total + shippingCost + tax;
 
