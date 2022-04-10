@@ -1,37 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { addToDb, getStoredData } from '../../utilities/fakedb';
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import useCart from '../../hooks/useCart';
+import useProducts from '../../hooks/useProducts';
+import { addToDb } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
 
 const Shop = () => {
-    const [products, setProducts] = useState([]);
-    const [cart, setCart] = useState([]);
-
-    useEffect( () => {
-        
-        fetch('products.json')
-        .then(res => res.json())
-        .then(data => setProducts(data))
-
-    }, []);
-
-    useEffect( () => {
-        
-        const storedData = getStoredData();
-        const savedProduct = [];
-        for (const id in storedData) {
-            const quantity = storedData[id];
-            const addedProduct = products.find(product => product.id === id);
-            if (addedProduct) {
-                addedProduct.quantity = quantity;
-                savedProduct.push(addedProduct)
-            }
-        }
-        
-        setCart(savedProduct);
-        
-    }, [products]);
+    const [products, setProducts] = useProducts();
+    const [cart, setCart] = useCart(products);
 
     const handleAddToCart = (selectedProduct) => {
         let newCart = [];
@@ -55,20 +35,27 @@ const Shop = () => {
     }
     
     return (
-        <div className='shop-container'>
-            <div className="products-container">
-                {
-                    products.map(product => <Product 
-                        product={product}
-                        key={product.id}
-                        handleAddToCart={handleAddToCart}
-                         ></Product>)
-                }
-            </div>
-            <div className="summary-container">
-                <Cart cart={cart} clearCart={clearCart}></Cart>
-            </div>
+      <div className="shop-container">
+        <div className="products-container">
+          {products.map((product) => (
+            <Product
+              product={product}
+              key={product.id}
+              handleAddToCart={handleAddToCart}
+            ></Product>
+          ))}
         </div>
+        <div className="summary-container">
+          <Cart cart={cart} clearCart={clearCart}>
+            <Link to={"/orders"} className="review-link">
+              <button className="review-btn">
+                Review Order{" "}
+                <FontAwesomeIcon icon={faArrowRight}></FontAwesomeIcon>
+              </button>
+            </Link>
+          </Cart>
+        </div>
+      </div>
     );
 };
 
