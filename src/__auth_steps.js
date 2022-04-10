@@ -6,6 +6,16 @@
 5. Initialize firebase in you project
 6. Go to authentication and click get started
 7. Add sign in method
+8. Create login, signup components,  setup routes
+9. attach form field handler and form submit handler
+10. npm install --save react-firebase-hooks
+11. useCreateUserWithEmailAndPassword from react-firebase-hooks
+12. if the user is created redirect to the expected page
+12. signInWithEmailAndPassword for sign in
+13. create RequireAuth component ==> Check user exist also track user location.
+14. In router wrap protected component using RequireAuth component 
+
+
 
 
 
