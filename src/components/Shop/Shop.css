@@ -18,3 +18,18 @@
 .review-link {
   text-decoration: none;
 }
+.pagination {
+  padding: 30px 30px;
+}
+
+.pagination button {
+  margin-right: 10px;
+  background-color: white;
+  border: 1px solid orange;
+  cursor: pointer;
+}
+
+.pagination .pagination-active {
+  background-color: orange;
+  color: white;
+}
